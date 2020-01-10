@@ -340,6 +340,27 @@ maven_install(
     ],
 )
 
+# https://github.com/bazelbuild/rules_jvm_external/issues/353
+maven_install(
+    name = "maven_genrule_testing",
+    artifacts = [
+        "org.apache.maven.plugins:maven-compiler-plugin:3.1",
+        "org.apache.maven.plugins:maven-jar-plugin:2.4",
+        "org.apache.maven.plugins:maven-resources-plugin:2.6",
+    ],
+    maven_install_json = "//tests/integration/maven:maven_genrule_testing_install.json",
+    repositories = [
+        "https://repo.maven.apache.org/maven2/",
+    ],
+)
+
+load(
+    "@maven_genrule_testing//:defs.bzl",
+    _maven_genrule_testing_install = "pinned_maven_install",
+)
+
+_maven_genrule_testing_install()
+
 RULES_KOTLIN_VERSION = "8ca948548159f288450516a09248dcfb9e957804"
 
 http_archive(
